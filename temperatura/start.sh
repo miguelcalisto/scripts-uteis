@@ -31,7 +31,7 @@ date=$(date +%H-%M)
 
 hora_atual=$(date +%H:%M)
 media=$(python3.11 media.py)
-echo "$media log de  $hora_atual" >> ~/MEDIAS.txt
+echo "$media log de  $hora_atual" >> ./MEDIAS.txt
 
 echo INCIO $date_inicio
 echo FIM $date
