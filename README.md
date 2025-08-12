@@ -2,7 +2,7 @@
 
 Este repositório contém scripts simples e úteis ,como:
 
-- 🔧 Alteração de DNS
+- 🔧 Alteração de DNS em /etc/resolv.conf
 - 🌡️ Cálculo da média de temperaturas da CPU (testado para cpu com 8 nucleos utilizando o psensors)
 - 📈 Geração de gráficos baseados nos dados de temperaturas com python 
 
@@ -12,12 +12,12 @@ Este repositório contém scripts simples e úteis ,como:
 
 | Nome do Script       | Linguagem | Função Principal                                                                 |
 |----------------------|-----------|----------------------------------------------------------------------------------|
-| `alterar_dns.sh`     | Shell     | Altera o DNS e faz backup das configurações antigas do arquivo `/etc/resolv.conf` |
+| `change_dns.sh`     | Shell     | Altera o DNS e faz backup das configurações antigas do arquivo `/etc/resolv.conf` o backup eh feito em `/etc/resolv.conf.bak` |
 | `calculo_temp.py`    | Python    | Cálculo direto dos logs de temperaturas do arquivo MEDIAS.txt (este arquivo tem as medias da temperatura de quando o script start.sh eh finalizado)|
 | `Graficos.py`        | Python    | Gera gráficos com base nos dados do arquivo `temperaturas_cpu.txt`              |
 | `media.py`           | Python    | Mostra de forma simples e genérica a média das temperaturas de `temperaturas_cpu.txt` |
 | `medias.sh`          | Shell     | Calcula a média de temperatura via terminal com base no arquivo `temperaturas_cpu.txt` |
-| `start.sh`           | Shell     | Script de inicialização                                                                |
+| `start.sh`           | Shell     | Script **principal** serve para pegar a temperatura das cpu e tirar a media            | 
 
 ---
 
@@ -32,16 +32,15 @@ Este repositório contém scripts simples e úteis ,como:
 
 ## 🚀 Como usar
 
-### 🔧 Instalar `psensor` e `lm-sensors` 
+### 🔧 Instalar e `lm-sensors` 
 
 ```bash
 sudo apt update
-sudo apt install psensor lm-sensors
+sudo apt install lm-sensors
 ```
 ### Habilitar o sensors
 ```bash
 sudo sensors-detect
-sensors
 ```
 
 ### 1. Alterar DNS 
