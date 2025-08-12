@@ -62,3 +62,10 @@ chmod +x start.sh
 ./start.sh
 ```
 **os outros scripts servem para visualização dos logs desses arquivos**
+
+## Prints dos Scripts
+
+
+![Gráfico de Temperatura](./Grafico.png)
+
+![Execução no Terminal](./term.png)
