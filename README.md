@@ -69,3 +69,5 @@ chmod +x start.sh
 ![Gráfico de Temperatura](./Grafico.png)
 
 ![Execução no Terminal](./term.png)
+
+![Execução no Terminal](./dns.png)
