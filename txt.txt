@@ -1,1 +1,2 @@
-#não esta salvando apos o boot
+#não esta salvando apos o boot mas ambos funcionam
+DNS
