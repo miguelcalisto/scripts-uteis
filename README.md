@@ -34,21 +34,23 @@ Este repositório contém scripts simples e úteis ,como:
 ## 🚀 Como usar
 
 ### 🔧 Instalar e `lm-sensors` 
-
+```bash
 sudo apt update  
 sudo apt install lm-sensors  
-
+```
 ### Habilitar o sensors
 
+```bash
 sudo sensors-detect  
-
+```
 ### 1. Alterar DNS 
 
 esta na pasta DNS do repositorio
 
+```bash
 chmod +x change.sh  
 sudo ./change_dns.sh  
-
+```
 ### 2. Scripts de temperatura
 
 O script `start.sh` inicia o processo de coleta e grava os dados de temperatura em dois arquivos:
@@ -56,30 +58,34 @@ O script `start.sh` inicia o processo de coleta e grava os dados de temperatura 
 - `temperaturas_cpu.txt`: dados de sensores(para cpu com 8 nucleos )  
 - `MEDIAS.txt`: médias registradas no final da execução  
 
+```bash
 chmod +x start.sh  
 ./start.sh  
-
+```
 ---
 
 ### 🐍 Observação : Criar ambiente virtual Python e instalar dependências
 
 Antes de executar os scripts Python, é recomendado criar um ambiente virtual para isolar as dependências:
 
+```bash
 python3 -m venv venv  
 source venv/bin/activate  
 pip install matplotlib  
-
+```
 para sair do venv
 
+```bash
 deactivate  
-
+```
 **os outros scripts servem para visualização dos logs desses arquivos**
 
+```bash
 python3 calculo_temp.py  
 python3 Graficos.py  
 python3 media.py  
 ./medias.sh  
-
+```
 ---
 
 ## Prints dos Scripts
