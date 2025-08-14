@@ -1,2 +1,0 @@
-#não esta salvando apos o boot mas ambos funcionam
-DNS
