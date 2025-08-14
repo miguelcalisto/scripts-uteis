@@ -14,10 +14,10 @@ Este repositório contém scripts simples e úteis ,como:
 |----------------------|-----------|----------------------------------------------------------------------------------|
 | `change_dns.sh`     | Shell     | Altera o DNS e faz backup das configurações antigas do arquivo `/etc/resolv.conf` o backup eh feito em `/etc/resolv.conf.bak` |
 | `calculo_temp.py`    | Python    | Cálculo direto dos logs de temperaturas do arquivo MEDIAS.txt (este arquivo tem as medias da temperatura de quando o script start.sh eh finalizado)|
-| `Graficos.py`        | Python    | Gera gráficos com base nos dados do arquivo `temperaturas_cpu.txt`              |
+| `Graficos.py`        | Python    | Gera gráficos com base nos dados do arquivo de log `temperaturas_cpu.txt`              |
 | `media.py`           | Python    | Mostra de forma simples e genérica a média das temperaturas de `temperaturas_cpu.txt` |
 | `medias.sh`          | Shell     | Calcula a média de temperatura via terminal com base no arquivo `temperaturas_cpu.txt` |
-| `start.sh`           | Shell     | Script **principal** serve para pegar a temperatura das cpu e tirar a media            | 
+| `start.sh`           | Shell     | Script **principal** serve para pegar a temperatura das cpu e tirar a media e deixar nos logs **temperatura_cpu.txt** e **MEDIAS.txt**            | 
 
 ---
 
@@ -59,6 +59,22 @@ O script `start.sh` inicia o processo de coleta e grava os dados de temperatura 
 ```bash
 chmod +x start.sh
 ./start.sh
+```
+
+---
+
+### 🐍 Observação : Criar ambiente virtual Python e instalar dependências
+
+Antes de executar os scripts Python, é recomendado criar um ambiente virtual para isolar as dependências:
+
+```bash
+python3 -m venv venv
+source venv/bin/activate  
+pip install matplotlib
+```
+para sair do venv
+```bash
+deactivate
 ```
 **os outros scripts servem para visualização dos logs desses arquivos**
 
