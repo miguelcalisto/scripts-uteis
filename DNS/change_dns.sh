@@ -117,6 +117,10 @@ case $opcao in
         ;;
     12)
         read -p "Digite o(s) DNS IPv4 (separados por espaço, ex: 1.1.1.1 8.8.8.8): " DNS
+        if [ -z "$DNS" ]; then
+            echo "❌ Você precisa fornecer ao menos um endereço IPv4."
+            exit 1
+        fi
         read -p "Deseja adicionar DNS IPv6? (s/n): " adicionar_ipv6
         if [[ "$adicionar_ipv6" =~ ^[sS]$ ]]; then
             read -p "Digite o(s) DNS IPv6 (separados por espaço, ex: 2606:4700:4700::1111): " DNSV6
