@@ -38,5 +38,4 @@ else
 fi
 
 echo "✅ Chave SSH criada com sucesso!"
-echo "👉 Agora adicione a chave pública na sua conta Git (GitHub/GitLab, etc)."
-
+echo "use :git remote set-url origin git@github.com:user/rep.git"
