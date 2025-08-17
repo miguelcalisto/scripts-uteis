@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "use :git remote set-url origin git@github.com:user/rep.git"
+
 # Nome do arquivo da chave (pode ser customizado)
 KEY_NAME="$HOME/.ssh/id_ed25519"
 
@@ -38,4 +40,3 @@ else
 fi
 
 echo "✅ Chave SSH criada com sucesso!"
-echo "use :git remote set-url origin git@github.com:user/rep.git"
