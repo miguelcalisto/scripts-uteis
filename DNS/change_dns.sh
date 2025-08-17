@@ -40,18 +40,19 @@ fi
 echo "============================="
 echo "   Escolha o novo DNS:"
 echo "============================="
-echo "1  - Cloudflare (1.1.1.1)           [Mais rápido e mais seguro]"
+echo "1  - Cloudflare (1.1.1.1)           [Mais rápido]"
 echo "2  - Google DNS (8.8.8.8)           [Rápido, mas coleta dados]"
 echo "3  - AdGuard DNS (94.140.14.14)     [Bloqueia anúncios]"
 echo "4  - OpenDNS (208.67.222.222)       [Seguro e confiável]"
-echo "5  - Quad9 (9.9.9.9)                [Privacidade e segurança]"
+echo "5  - Quad9 (9.9.9.9)                [Privacidade]"
 echo "6  - Family Filter (185.228.168.168)[]"
 echo "7  - Comodo Secure DNS (8.26.56.26) [Proteção básica]"
-echo "8  - Yandex DNS (77.88.8.8)         [Antivírus e segurança extra]"
-echo "9  - Neustar DNS (156.154.70.1)     [Estável e seguro]"
+echo "8  - Yandex DNS (77.88.8.8)         [segurança extra]"
+echo "9  - Neustar DNS (156.154.70.1)     [Estável]"
 echo "10 - DNS.Watch (84.200.69.80)       [Sem registro de dados]"
-echo "11 - Restaurar DNS original"
-echo "12 - Sair"
+echo "11 - UncensoredDNS (91.239.100.100) [Open Source]"
+echo "12 - Restaurar DNS original"
+echo "13 - Sair"
 echo "============================="
 
 read -p "Digite o número da opção desejada: " opcao
@@ -109,6 +110,11 @@ case $opcao in
     NOME="DNS.Watch"
     ;;
   11)
+    DNS="91.239.100.100 89.233.43.71"
+    DNSV6="2001:67c:28a4:: 2a01:3a0:53:53::"
+    NOME="UncensoredDNS (Open Source)"
+    ;;
+  12)
     if [ -f "$BACKUP_FILE" ]; then
       echo "♻️  Restaurando DNS original da conexão: $CONEXAO"
       source "$BACKUP_FILE"
@@ -128,7 +134,7 @@ case $opcao in
       exit 1
     fi
     ;;
-  12)
+  13)
     echo "Saindo..."
     exit 0
     ;;
@@ -166,7 +172,7 @@ fi
 if ping6 -c 2 -W 2 2606:4700:4700::1111 >/dev/null 2>&1 || ping6 -c 2 -W 2 2001:4860:4860::8888 >/dev/null 2>&1; then
   echo "✅ Conectividade IPv6 OK!"
 else
-  echo "ℹ️  Sem resposta via IPv6 (pode ser normal, dependendo do seu provedor)."
+  echo "ℹ️  Sem resposta via IPv6."
 fi
 
 echo "✅ DNS alterado com sucesso para: $DNS"
