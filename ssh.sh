@@ -39,4 +39,18 @@ else
     echo
 fi
 
+# Testa a conexão com o GitHub
+echo "🌐 Testando conexão com o GitHub..."
+
+ssh -T git@github.com
+
+if [ $? -eq 1 ]; then
+    echo "✅ Conexão estabelecida com sucesso! Sua chave SSH está funcionando. 🎉"
+else
+    echo "⚠️ Não foi possível se conectar ao GitHub via SSH."
+    echo "🔍 Verifique se você adicionou a chave pública à sua conta GitHub:"
+fi
+
+
 echo "✅ Chave SSH criada com sucesso!"
+
