@@ -79,5 +79,8 @@ echo
 cat "$KEY_NAME.pub"
 echo
 
+
+echo "use :git remote set-url origin git@github.com:user/rep.git"
+
 echo
 echo "✅ Processo finalizado!"
