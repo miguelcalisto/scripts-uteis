@@ -43,9 +43,9 @@ fi
 # Exibe a chave pública para cópia manual
 echo
 echo "📋 Copie manualmente a chave pública abaixo e adicione no GitHub:"
-echo "👉 https://github.com/settings/keys → New SSH key"
 echo
 cat "$KEY_NAME.pub"
+
 echo
 
 # Configuração global do Git
@@ -70,11 +70,14 @@ if echo "$ssh_output" | grep -q "successfully authenticated"; then
 else
     echo "⚠️ Não foi possível se conectar ao GitHub via SSH."
     echo "🔍 Verifique se você adicionou a chave pública à sua conta GitHub:"
-    echo "👉 https://github.com/settings/keys"
     echo
     echo "🧾 Saída do ssh:"
     echo "$ssh_output"
 fi
+
+echo
+cat "$KEY_NAME.pub"
+echo
 
 echo
 echo "✅ Processo finalizado!"
