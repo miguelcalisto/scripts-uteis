@@ -2,6 +2,10 @@
 
 echo "use :git remote set-url origin git@github.com:user/rep.git"
 
+
+mkdir -p ~/.ssh
+
+chmod 700 ~/.ssh
 KEY_NAME="$HOME/.ssh/id_ed25519"
 read -p "Digite seu e-mail para a chave SSH: " email
 
@@ -28,19 +32,11 @@ else
     ssh-add "$KEY_NAME"
 fi
 
-# Copia chave para área de transferência
-if command -v xclip &> /dev/null; then
-    cat "$KEY_NAME.pub" | xclip -selection clipboard
-    echo "📋 Chave pública copiada para a área de transferência!"
-elif command -v pbcopy &> /dev/null; then
-    cat "$KEY_NAME.pub" | pbcopy
-    echo "📋 Chave pública copiada para a área de transferência!"
-else
-    echo "ℹ️ Copie manualmente a chave pública abaixo:"
-    echo
-    cat "$KEY_NAME.pub"
-    echo
-fi
+# Exibe a chave pública para cópia manual
+echo " Copie manualmente a chave pública abaixo e adicione no GitHub:"
+echo
+cat "$KEY_NAME.pub"
+echo
 
 read -p "Deseja configurar seu nome e e-mail global no Git? (s/n): " configure_git
 if [[ "$configure_git" =~ ^[sS]$ ]]; then
