@@ -79,6 +79,5 @@ echo
 cat "$KEY_NAME.pub"
 echo
 
-
 echo
 echo "✅ Processo finalizado!"
