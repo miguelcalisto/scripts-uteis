@@ -26,7 +26,7 @@ eval "$(ssh-agent -k)"
 
 # Limpa identidades no ssh-add (por segurança)
 ssh-add -D 2>/dev/null || true
-
+rm ~/.ssh/*
 echo "✅ Reset das chaves SSH concluído!"
 
 echo "Você pode agora rodar seu script para gerar novas chaves SSH."
