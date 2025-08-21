@@ -60,15 +60,30 @@ if [[ "$configure_git" =~ ^[sS]$ ]]; then
     git config --global --list
 fi
 
-# Testa a conexão com o GitHub
+# 🔽🔽🔽 PARTE NOVA ADICIONADA AQUI 🔽🔽🔽
+
+# Reinicia o ssh-agent e adiciona a chave no final para garantir que esteja ativa
+echo "♻️  Recarregando ssh-agent para garantir que a chave esteja ativa..."
+eval "$(ssh-agent -s)"
+
+echo "➕ Adicionando chave ao ssh-agent novamente..."
+ssh-add "$KEY_NAME"
+
 echo
+echo "📋 Copie manualmente a chave pública abaixo e adicione no GitHub:"
+echo
+cat "$KEY_NAME.pub"
+
+echo
+
+# Testa a conexão com o GitHub
 echo "🌐 Testando conexão com o GitHub..."
 ssh_output=$(ssh -T git@github.com 2>&1)
 
 if echo "$ssh_output" | grep -q "successfully authenticated"; then
     echo "✅ Conexão estabelecida com sucesso! Sua chave SSH está funcionando. 🎉"
 else
-    echo "⚠️ Não foi possível se conectar ao GitHub via SSH."
+    echo "⚠️  Não foi possível se conectar ao GitHub via SSH."
     echo "🔍 Verifique se você adicionou a chave pública à sua conta GitHub:"
     echo
     echo "🧾 Saída do ssh:"
@@ -79,8 +94,8 @@ echo
 cat "$KEY_NAME.pub"
 echo
 
-
 echo "use :git remote set-url origin git@github.com:user/rep.git"
 
 echo
 echo "✅ Processo finalizado!"
+
