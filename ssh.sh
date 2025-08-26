@@ -1,8 +1,6 @@
 #!/bin/bash
 
 
-echo "use : git remote set-url origin git@github.com:user/repo.git"
-
 mkdir -p ~/.ssh
 chmod 700 ~/.ssh
 
@@ -130,5 +128,8 @@ fi
 
 echo
 echo "✅ Processo finalizado!"
+
+echo -e "\033[32m"
 echo "use : git remote set-url origin git@github.com:user/repo.git"
+echo -e "\033[0m"
 git remote -v
