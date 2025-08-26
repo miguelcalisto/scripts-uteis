@@ -1,6 +1,5 @@
 #!/bin/bash
 
-set -e
 
 echo "use : git remote set-url origin git@github.com:user/repo.git"
 
@@ -132,4 +131,4 @@ fi
 echo
 echo "✅ Processo finalizado!"
 echo "use : git remote set-url origin git@github.com:user/repo.git"
-
+git remote -v
