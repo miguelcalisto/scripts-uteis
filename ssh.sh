@@ -141,7 +141,7 @@ sleep 1
 # ------------------------------------------------------------------------------ 
 echo 
 read -p "Deseja configurar seu nome e e-mail global no Git? (s/n): " configure_git
-echo 
+
 if [[ "$configure_git" =~ ^[sS]$ ]]; then
     read -p "Digite seu nome completo para o Git: " git_name
     git config --global user.name "$git_name"
