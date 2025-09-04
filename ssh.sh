@@ -12,13 +12,13 @@ BLUE='\033[0;34m'
 RESET='\033[0m'
 MAGENTA='\033[1;35m'
 
-
 echo -e "${MAGENTA}###################################"
-echo -e "#                                 #"
-echo -e "#      GERADOR DE CHAVE SSH       #"
-echo -e "#                                 #"
-echo -e "###################################${RESET}"
-echo 
+echo -e "${MAGENTA}#${RESET}${BLUE}                                 ${MAGENTA}#"
+echo -e "${MAGENTA}#${RESET}${YELLOW}   🛡️GERADOR DE CHAVE SSH🛡️      ${MAGENTA}#"
+echo -e "${MAGENTA}#${RESET}${BLUE}                                 ${MAGENTA}#"
+echo -e "${MAGENTA}###################################${RESET}"
+
+
 # ------------------------------------------------------------------------------ 
 # ##### 🧠 Função: Iniciar ssh-agent se necessário #####
 # ------------------------------------------------------------------------------ 
