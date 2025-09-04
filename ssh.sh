@@ -179,5 +179,10 @@ echo -e "${GREEN}##### ✅ Processo finalizado com sucesso! #####${RESET}"
 echo
 echo -e "${YELLOW}Use: git remote set-url origin git@github.com:usuario/repositorio.git${RESET}"
 echo
+
+
 git remote -v
 
+echo
+
+echo -e "${GREEN}$(cat "$KEY_NAME.pub")${NC}"
