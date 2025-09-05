@@ -14,7 +14,7 @@ MAGENTA='\033[1;35m'
 
 echo -e "${MAGENTA}###################################"
 echo -e "${MAGENTA}#${RESET}${BLUE}                                 ${MAGENTA}#"
-echo -e "${MAGENTA}#${RESET}${YELLOW}   🛡️GERADOR DE CHAVE SSH🛡️      ${MAGENTA}#"
+echo -e "${MAGENTA}#${RESET}${YELLOW}   🛡️ GERADOR DE CHAVE SSH🛡️       ${MAGENTA}#"
 echo -e "${MAGENTA}#${RESET}${BLUE}                                 ${MAGENTA}#"
 echo -e "${MAGENTA}###################################${RESET}"
 
