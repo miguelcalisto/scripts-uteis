@@ -1,35 +1,79 @@
 #!/bin/bash
 
-BACKUP_DIR="$HOME/backup_ssh_$(date +%Y%m%d_%H%M%S)"
+echo "⚠️  ATENÇÃO: Este script permite remover suas chaves SSH e/ou as configurações globais do Git."
 
-echo "⚠️  ATENÇÃO: Este script vai remover todas as suas chaves SSH e configurações atuais."
-read -p "Deseja continuar? (s/n): " confirm
+echo ""
+echo "Escolha uma opção:"
+echo "1) Remover chaves SSH e configurações do Git"
+echo "2) Remover apenas configurações do Git"
+echo "3) Cancelar"
+read -p "Digite o número da opção desejada: " option
 
-if [[ ! "$confirm" =~ ^[sS]$ ]]; then
-    echo "Abortando."
-    exit 1
-fi
+case "$option" in
+    1)
+        BACKUP_DIR="$HOME/backup_ssh_$(date +%Y%m%d_%H%M%S)"
 
-# Cria backup das chaves SSH atuais
-if [ -d "$HOME/.ssh" ]; then
-    echo "📦 Criando backup da pasta ~/.ssh em $BACKUP_DIR ..."
-    mkdir -p "$BACKUP_DIR"
-    cp -r ~/.ssh/* "$BACKUP_DIR/"
-    echo "Backup criado com sucesso!"
-else
-    echo "Nenhuma pasta ~/.ssh encontrada, nada para fazer backup."
-fi
+        # Confirmação final
+        read -p "Tem certeza que deseja remover todas as chaves SSH e as configurações do Git? (s/n): " confirm
+        if [[ ! "$confirm" =~ ^[sS]$ ]]; then
+            echo "Abortando."
+            exit 1
+        fi
 
-# Finaliza ssh-agent, se estiver rodando
-echo "🛑 Finalizando ssh-agent, se estiver ativo..."
-eval "$(ssh-agent -k)"
+        # Backup das chaves SSH
+        if [ -d "$HOME/.ssh" ]; then
+            echo "📦 Criando backup da pasta ~/.ssh em $BACKUP_DIR ..."
+            mkdir -p "$BACKUP_DIR"
+            cp -r ~/.ssh/* "$BACKUP_DIR/"
+            echo "Backup criado com sucesso!"
+        else
+            echo "Nenhuma pasta ~/.ssh encontrada, nada para fazer backup."
+        fi
 
-# Limpa identidades no ssh-add (por segurança)
-ssh-add -D 2>/dev/null || true
-rm ~/.ssh/*
-echo "✅ Reset das chaves SSH concluído!"
+        # Finaliza ssh-agent
+        echo "🛑 Finalizando ssh-agent, se estiver ativo..."
+        eval "$(ssh-agent -k)"
+        ssh-add -D 2>/dev/null || true
 
-echo "Você pode agora rodar seu script para gerar novas chaves SSH."
+        # Remove chaves
+        rm -f ~/.ssh/*
 
-echo "Backup das chaves antigas está salvo em: $BACKUP_DIR"
+        echo "✅ Chaves SSH removidas!"
+        echo "Backup salvo em: $BACKUP_DIR"
+
+        # Remove config Git
+        echo "🧹 Removendo configurações globais do Git..."
+        git config --global --unset user.name 2>/dev/null
+        git config --global --unset user.email 2>/dev/null
+        echo "✅ Configurações do Git removidas."
+        ;;
+    
+    2)
+        # Confirmação
+        read -p "Tem certeza que deseja remover apenas as configurações do Git? (s/n): " confirm_git
+        if [[ ! "$confirm_git" =~ ^[sS]$ ]]; then
+            echo "Abortando."
+            exit 1
+        fi
+
+        # Remove config Git
+        echo "🧹 Removendo configurações globais do Git..."
+        git config --global --unset user.name 2>/dev/null
+        git config --global --unset user.email 2>/dev/null
+        echo "✅ Configurações do Git removidas."
+        ;;
+    
+    3)
+        echo "Operação cancelada."
+        exit 0
+        ;;
+    
+    *)
+        echo "❌ Opção inválida. Abortando."
+        exit 1
+        ;;
+esac
+
+echo ""
+echo "✅ Operação concluída com sucesso."
 
