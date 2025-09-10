@@ -1,79 +1,90 @@
 #!/bin/bash
 
-echo "⚠️  ATENÇÃO: Este script permite remover suas chaves SSH e/ou as configurações globais do Git."
+# Cores e estilos
+RED=$(tput setaf 1)
+GREEN=$(tput setaf 2)
+YELLOW=$(tput setaf 3)
+CYAN=$(tput setaf 6)
+BOLD=$(tput bold)
+RESET=$(tput sgr0)
+
+clear
+echo "${YELLOW}${BOLD}⚠️  ATENÇÃO:${RESET} Este script permite remover suas chaves SSH e/ou as configurações globais do Git."
 
 echo ""
-echo "Escolha uma opção:"
-echo "1) Remover chaves SSH e configurações do Git"
-echo "2) Remover apenas configurações do Git"
-echo "3) Cancelar"
+echo "${CYAN}##############################################${RESET}"
+echo "${CYAN}#${RESET} ${BOLD}Escolha uma opção:${RESET}"
+echo "${CYAN}##############################################${RESET}"
+echo "1) 🗑️  Remover ${BOLD}chaves SSH${RESET} e ${BOLD}configurações do Git${RESET}"
+echo "2) 🧹 Remover ${BOLD}apenas configurações do Git${RESET}"
+echo "3) ❌ Cancelar"
+echo ""
 read -p "Digite o número da opção desejada: " option
+echo ""
 
 case "$option" in
     1)
-        BACKUP_DIR="$HOME/backup_ssh_$(date +%Y%m%d_%H%M%S)"
-
-        # Confirmação final
-        read -p "Tem certeza que deseja remover todas as chaves SSH e as configurações do Git? (s/n): " confirm
+        echo "${YELLOW}${BOLD}Você escolheu remover TUDO!${RESET}"
+        read -p "Tem certeza que deseja continuar? (s/n): " confirm
         if [[ ! "$confirm" =~ ^[sS]$ ]]; then
-            echo "Abortando."
+            echo "${RED}Abortando.${RESET}"
             exit 1
         fi
 
-        # Backup das chaves SSH
-        if [ -d "$HOME/.ssh" ]; then
-            echo "📦 Criando backup da pasta ~/.ssh em $BACKUP_DIR ..."
-            mkdir -p "$BACKUP_DIR"
-            cp -r ~/.ssh/* "$BACKUP_DIR/"
-            echo "Backup criado com sucesso!"
-        else
-            echo "Nenhuma pasta ~/.ssh encontrada, nada para fazer backup."
-        fi
-
-        # Finaliza ssh-agent
-        echo "🛑 Finalizando ssh-agent, se estiver ativo..."
+        echo ""
+        echo "${CYAN}########## FINALIZANDO SSH-AGENT ##########${RESET}"
+        sleep 1
+        echo "🛑 Encerrando ssh-agent (se estiver ativo)..."
         eval "$(ssh-agent -k)"
         ssh-add -D 2>/dev/null || true
 
-        # Remove chaves
-        rm -f ~/.ssh/*
+        echo ""
+        echo "${CYAN}########## REMOVENDO CHAVES SSH ##########${RESET}"
+        sleep 1
+        if [ -d "$HOME/.ssh" ]; then
+            rm -f ~/.ssh/*
+            echo "${GREEN}✅ Chaves SSH removidas.${RESET}"
+        else
+            echo "${YELLOW}⚠ Nenhuma pasta ~/.ssh encontrada. Nada a remover.${RESET}"
+        fi
 
-        echo "✅ Chaves SSH removidas!"
-        echo "Backup salvo em: $BACKUP_DIR"
-
-        # Remove config Git
-        echo "🧹 Removendo configurações globais do Git..."
+        echo ""
+        echo "${CYAN}########## REMOVENDO CONFIGURAÇÕES DO GIT ##########${RESET}"
+        sleep 1
         git config --global --unset user.name 2>/dev/null
         git config --global --unset user.email 2>/dev/null
-        echo "✅ Configurações do Git removidas."
+        echo "${GREEN}✅ Configurações do Git removidas.${RESET}"
         ;;
     
     2)
-        # Confirmação
-        read -p "Tem certeza que deseja remover apenas as configurações do Git? (s/n): " confirm_git
+        echo "${YELLOW}${BOLD}Você escolheu remover apenas as configurações do Git.${RESET}"
+        read -p "Tem certeza que deseja continuar? (s/n): " confirm_git
         if [[ ! "$confirm_git" =~ ^[sS]$ ]]; then
-            echo "Abortando."
+            echo "${RED}Abortando.${RESET}"
             exit 1
         fi
 
-        # Remove config Git
-        echo "🧹 Removendo configurações globais do Git..."
+        echo ""
+        echo "${CYAN}########## REMOVENDO CONFIGURAÇÕES DO GIT ##########${RESET}"
+        sleep 1
         git config --global --unset user.name 2>/dev/null
         git config --global --unset user.email 2>/dev/null
-        echo "✅ Configurações do Git removidas."
+        echo "${GREEN}✅ Configurações do Git removidas.${RESET}"
         ;;
     
     3)
-        echo "Operação cancelada."
+        echo "${YELLOW}Operação cancelada pelo usuário.${RESET}"
         exit 0
         ;;
     
     *)
-        echo "❌ Opção inválida. Abortando."
+        echo "${RED}❌ Opção inválida. Abortando.${RESET}"
         exit 1
         ;;
 esac
 
 echo ""
-echo "✅ Operação concluída com sucesso."
+sleep 1
+echo "${GREEN}${BOLD}✅ Operação concluída com sucesso.${RESET}"
+echo ""
 
