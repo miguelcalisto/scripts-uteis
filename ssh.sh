@@ -189,3 +189,4 @@ git remote -v
 echo
 
 echo -e "${GREEN}$(cat "$KEY_NAME.pub")${NC}"
+echo

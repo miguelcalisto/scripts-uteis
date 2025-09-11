@@ -13,8 +13,11 @@ echo "${YELLOW}${BOLD}⚠️  ATENÇÃO:${RESET} Este script permite remover sua
 
 echo ""
 echo "${CYAN}##############################################${RESET}"
+echo
 echo "${CYAN}#${RESET} ${BOLD}Escolha uma opção:${RESET}"
+echo
 echo "${CYAN}##############################################${RESET}"
+echo
 echo "1) 🗑️  Remover ${BOLD}chaves SSH${RESET} e ${BOLD}configurações do Git${RESET}"
 echo "2) 🧹 Remover ${BOLD}apenas configurações do Git${RESET}"
 echo "3) ❌ Cancelar"
