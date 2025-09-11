@@ -1,4 +1,5 @@
 #!/bin/bash
+clear
 
 # Diretório ~/.ssh
 mkdir -p ~/.ssh
@@ -13,15 +14,16 @@ RESET='\033[0m'
 MAGENTA='\033[1;35m'
 
 echo -e "${MAGENTA}###################################"
-echo -e "${MAGENTA}#${RESET}${BLUE}                                 ${MAGENTA}#"
-echo -e "${MAGENTA}#${RESET}${YELLOW}   🛡️ GERADOR DE CHAVE SSH🛡️       ${MAGENTA}#"
-echo -e "${MAGENTA}#${RESET}${BLUE}                                 ${MAGENTA}#"
+echo -e "${MAGENTA}${RESET}${BLUE}                                 ${MAGENTA}"
+echo -e "${MAGENTA}${RESET}${YELLOW}   🛡️ GERADOR DE CHAVE SSH🛡️       ${MAGENTA}"
+echo -e "${MAGENTA}${RESET}${BLUE}                                 ${MAGENTA}"
 echo -e "${MAGENTA}###################################${RESET}"
-
+echo
 
 # ------------------------------------------------------------------------------ 
 # ##### 🧠 Função: Iniciar ssh-agent se necessário #####
 # ------------------------------------------------------------------------------ 
+echo
 start_ssh_agent_if_needed() {
     if [ -z "$SSH_AGENT_PID" ] || ! ps -p "$SSH_AGENT_PID" > /dev/null 2>&1; then
         echo -e "${BLUE}##### 🧠 ssh-agent não está rodando. Iniciando... #####${RESET}"
@@ -146,6 +148,7 @@ if [[ "$configure_git" =~ ^[sS]$ ]]; then
     read -p "Digite seu nome completo para o Git: " git_name
     git config --global user.name "$git_name"
     git config --global user.email "$email"
+    echoo
     echo -e "${GREEN}##### ✅ Git configurado: #####${RESET}"
     echo "   🧑 Nome:  $(git config --global user.name)"
     echo "   📧 E-mail: $(git config --global user.email)"
@@ -174,7 +177,7 @@ sleep 1
 # ------------------------------------------------------------------------------ 
 # ##### ✅ Finalização #####
 # ------------------------------------------------------------------------------ 
-
+echo
 echo -e "${GREEN}##### ✅ Processo finalizado com sucesso! #####${RESET}"
 echo
 echo -e "${YELLOW}Use: git remote set-url origin git@github.com:usuario/repositorio.git${RESET}"
