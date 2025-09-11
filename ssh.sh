@@ -92,7 +92,7 @@ if [ "$goto_skip_keygen" != true ]; then
     KEY_NAME="$HOME/.ssh/$chave_nome"
 
     read -p "Digite seu e-mail para a chave SSH: " email
-
+    echo	
     if [ -f "$KEY_NAME" ]; then
         echo -e "${RED}##### ⚠️  A chave $KEY_NAME já existe. Abortando para não sobrescrever. #####${RESET}"
         exit 1
@@ -148,7 +148,7 @@ if [[ "$configure_git" =~ ^[sS]$ ]]; then
     read -p "Digite seu nome completo para o Git: " git_name
     git config --global user.name "$git_name"
     git config --global user.email "$email"
-    echoo
+    echo
     echo -e "${GREEN}##### ✅ Git configurado: #####${RESET}"
     echo "   🧑 Nome:  $(git config --global user.name)"
     echo "   📧 E-mail: $(git config --global user.email)"
