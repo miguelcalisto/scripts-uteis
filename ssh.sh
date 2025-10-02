@@ -21,9 +21,9 @@ echo -e "${MAGENTA}${RESET}${BLUE}                                 ${MAGENTA}"
 echo -e "${MAGENTA}###################################${RESET}"
 echo
 
-# ------------------------------------------------------------------------------ 
+# -------------------------------------------------------------------------------
 # ##### 🧠 Função: Iniciar ssh-agent se necessário #####
-# ------------------------------------------------------------------------------ 
+# -------------------------------------------------------------------------------
 echo
 start_ssh_agent_if_needed() {
     if [ -z "$SSH_AGENT_PID" ] || ! ps -p "$SSH_AGENT_PID" > /dev/null 2>&1; then
@@ -65,8 +65,27 @@ if [ ${#chaves_existentes[@]} -gt 0 ]; then
         if ! ssh-add -l 2>/dev/null | grep -q "$(ssh-keygen -lf "$KEY_NAME" | awk '{print $2}')"; then
             echo -e "${BLUE}##### ➕ Adicionando chave ao ssh-agent... #####${RESET}"
             ssh-add "$KEY_NAME"
+
+            # === ADIÇÃO: Exibir chave pública correspondente para cópia ===
+            if [ -f "${KEY_NAME}.pub" ]; then
+                echo -e "\n##### 📋 Copie a chave pública abaixo e adicione ao GitHub: #####\n"
+                echo -e "${GREEN}"
+                cat "${KEY_NAME}.pub"
+                echo -e "${RESET}"
+            else
+                echo -e "${RED}##### ❌ Arquivo ${KEY_NAME}.pub não encontrado. #####${RESET}"
+            fi
+            # ===========================================================
         else
             echo -e "${GREEN}##### 🔑 Chave já está adicionada ao ssh-agent. #####${RESET}"
+
+            # Mesmo que já esteja adicionada, mostrar chave pública caso exista (útil para cópia)
+            if [ -f "${KEY_NAME}.pub" ]; then
+                echo -e "\n##### 📋 Chave pública (já adicionada) — copie abaixo: #####\n"
+                echo -e "${GREEN}"
+                cat "${KEY_NAME}.pub"
+                echo -e "${RESET}"
+            fi
         fi
 
         goto_skip_keygen=true
@@ -84,16 +103,16 @@ fi
 
 sleep 1
 
-# ------------------------------------------------------------------------------ 
+# -------------------------------------------------------------------------------
 # ##### 🛠️ Geração da nova chave SSH #####
-# ------------------------------------------------------------------------------ 
+# -------------------------------------------------------------------------------
 if [ "$goto_skip_keygen" != true ]; then
     read -p "Digite o nome da chave SSH (Enter para 'id_ed25519'): " chave_nome
     chave_nome=${chave_nome:-id_ed25519}
     KEY_NAME="$HOME/.ssh/$chave_nome"
 
     read -p "Digite seu e-mail para a chave SSH: " email
-    echo	
+    echo
     if [ -f "$KEY_NAME" ]; then
         echo -e "${RED}##### ⚠️  A chave $KEY_NAME já existe. Abortando para não sobrescrever. #####${RESET}"
         exit 1
@@ -139,10 +158,10 @@ fi
 
 sleep 1
 
-# ------------------------------------------------------------------------------ 
+# -------------------------------------------------------------------------------
 # ##### 🛠️ Configuração global do Git #####
-# ------------------------------------------------------------------------------ 
-echo 
+# -------------------------------------------------------------------------------
+echo
 read -p "Deseja configurar seu nome e e-mail global no Git? (s/n): " configure_git
 
 if [[ "$configure_git" =~ ^[sS]$ ]]; then
@@ -157,9 +176,9 @@ fi
 
 sleep 1
 
-# ------------------------------------------------------------------------------ 
+# -------------------------------------------------------------------------------
 # ##### 🌐 Testando conexão SSH com o GitHub #####
-# ------------------------------------------------------------------------------ 
+# -------------------------------------------------------------------------------
 echo -e "\n##### 🌐 Testando conexão com o GitHub... #####"
 ssh_output=$(ssh -T git@github.com 2>&1)
 
@@ -175,19 +194,22 @@ fi
 
 sleep 1
 
-# ------------------------------------------------------------------------------ 
+# -------------------------------------------------------------------------------
 # ##### ✅ Finalização #####
-# ------------------------------------------------------------------------------ 
+# -------------------------------------------------------------------------------
 echo
 echo -e "${GREEN}##### ✅ Processo finalizado com sucesso! #####${RESET}"
 echo
 echo -e "${YELLOW}Use: git remote set-url origin git@github.com:usuario/repositorio.git${RESET}"
 echo
 
-
 git remote -v
 
 echo
 
-echo -e "${GREEN}$(cat "$KEY_NAME.pub")${NC}"
+# Mostra a chave pública finalmente (se existir)
+if [ -f "${KEY_NAME}.pub" ]; then
+    echo -e "${GREEN}$(cat "$KEY_NAME.pub")${RESET}"
+fi
 echo
+
