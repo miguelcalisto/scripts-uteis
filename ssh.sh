@@ -162,6 +162,11 @@ sleep 1
 # ##### 🛠️ Configuração global do Git #####
 # -------------------------------------------------------------------------------
 echo
+
+echo "Name: $(git config user.name)"
+echo "Email: $(git config user.email)"
+
+echo
 read -p "Deseja configurar seu nome e e-mail global no Git? (s/n): " configure_git
 
 if [[ "$configure_git" =~ ^[sS]$ ]]; then
