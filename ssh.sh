@@ -1,78 +1,133 @@
 #!/bin/bash
 
+clear
 
+# Diretório ~/.ssh
 mkdir -p ~/.ssh
 chmod 700 ~/.ssh
 
-function start_ssh_agent_if_needed() {
+# Cores
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+RESET='\033[0m'
+MAGENTA='\033[1;35m'
+
+echo -e "${MAGENTA}###################################"
+echo -e "${MAGENTA}${RESET}${BLUE}                                 ${MAGENTA}"
+echo -e "${MAGENTA}${RESET}${YELLOW}   🛡️ GERADOR DE CHAVE SSH🛡️       ${MAGENTA}"
+echo -e "${MAGENTA}${RESET}${BLUE}                                 ${MAGENTA}"
+echo -e "${MAGENTA}###################################${RESET}"
+echo
+
+# -------------------------------------------------------------------------------
+# ##### 🧠 Função: Iniciar ssh-agent se necessário #####
+# -------------------------------------------------------------------------------
+echo
+start_ssh_agent_if_needed() {
     if [ -z "$SSH_AGENT_PID" ] || ! ps -p "$SSH_AGENT_PID" > /dev/null 2>&1; then
-        echo "🧠 ssh-agent não está rodando. Iniciando ssh-agent..."
+        echo -e "${BLUE}##### 🧠 ssh-agent não está rodando. Iniciando... #####${RESET}"
         eval "$(ssh-agent -s)"
     else
-        echo "🧠 ssh-agent já está rodando com PID $SSH_AGENT_PID."
+        echo -e "${GREEN}##### 🧠 ssh-agent já está rodando com PID $SSH_AGENT_PID. #####${RESET}"
     fi
 }
 
-echo "🔍 Procurando chaves SSH existentes em ~/.ssh..."
+echo -e "${BLUE}##### 🔍 Procurando chaves SSH existentes em ~/.ssh... #####${RESET}"
 chaves_existentes=()
 while IFS= read -r chave; do
     chaves_existentes+=("$chave")
 done < <(find ~/.ssh -maxdepth 1 -type f ! -name "*.pub" -exec grep -l "PRIVATE KEY" {} + 2>/dev/null)
 
+sleep 1
+
 goto_skip_keygen=false
 
 if [ ${#chaves_existentes[@]} -gt 0 ]; then
-    echo "Chaves SSH encontradas:"
+    echo -e "${GREEN}##### 🔑 Chaves SSH encontradas: #####${RESET}"
     for i in "${!chaves_existentes[@]}"; do
         echo "  [$i] $(basename "${chaves_existentes[$i]}")"
     done
     echo "  [c] Criar uma nova chave SSH"
+    echo
     read -p "Escolha uma chave existente pelo número ou 'c' para criar nova: " escolha
 
+    echo
     if [[ "$escolha" =~ ^[0-9]+$ ]] && [ "$escolha" -ge 0 ] && [ "$escolha" -lt "${#chaves_existentes[@]}" ]; then
         KEY_NAME="${chaves_existentes[$escolha]}"
-        echo "Você escolheu a chave: $KEY_NAME"
+        echo -e "${BLUE}##### 🔐 Você escolheu a chave: $KEY_NAME #####${RESET}"
 
         start_ssh_agent_if_needed
 
+        sleep 1
+
         if ! ssh-add -l 2>/dev/null | grep -q "$(ssh-keygen -lf "$KEY_NAME" | awk '{print $2}')"; then
-            echo "➕ Adicionando chave ao ssh-agent..."
+            echo -e "${BLUE}##### ➕ Adicionando chave ao ssh-agent... #####${RESET}"
             ssh-add "$KEY_NAME"
+
+            # === ADIÇÃO: Exibir chave pública correspondente para cópia ===
+            if [ -f "${KEY_NAME}.pub" ]; then
+                echo -e "\n##### 📋 Copie a chave pública abaixo e adicione ao GitHub: #####\n"
+                echo -e "${GREEN}"
+                cat "${KEY_NAME}.pub"
+                echo -e "${RESET}"
+            else
+                echo -e "${RED}##### ❌ Arquivo ${KEY_NAME}.pub não encontrado. #####${RESET}"
+            fi
+            # ===========================================================
         else
-            echo "🔑 Chave já está adicionada ao ssh-agent."
+            echo -e "${GREEN}##### 🔑 Chave já está adicionada ao ssh-agent. #####${RESET}"
+
+            # Mesmo que já esteja adicionada, mostrar chave pública caso exista (útil para cópia)
+            if [ -f "${KEY_NAME}.pub" ]; then
+                echo -e "\n##### 📋 Chave pública (já adicionada) — copie abaixo: #####\n"
+                echo -e "${GREEN}"
+                cat "${KEY_NAME}.pub"
+                echo -e "${RESET}"
+            fi
         fi
 
         goto_skip_keygen=true
     elif [[ "$escolha" == "c" || "$escolha" == "C" ]]; then
-        echo "Você escolheu criar uma nova chave SSH."
+        echo -e "${BLUE}##### 🛠️ Criando nova chave SSH... #####${RESET}"
         goto_skip_keygen=false
     else
-        echo "Opção inválida. Saindo."
+        echo -e "${RED}##### ❌ Opção inválida. Saindo. #####${RESET}"
         exit 1
     fi
 else
-    echo "Nenhuma chave SSH encontrada. Vamos criar uma nova."
+    echo -e "${YELLOW}##### ⚠️ Nenhuma chave SSH encontrada. Vamos criar uma nova. #####${RESET}"
     goto_skip_keygen=false
 fi
 
+sleep 1
+
+# -------------------------------------------------------------------------------
+# ##### 🛠️ Geração da nova chave SSH #####
+# -------------------------------------------------------------------------------
 if [ "$goto_skip_keygen" != true ]; then
-    read -p "Digite o nome da chave SSH (pressione Enter para usar 'id_ed25519'): " chave_nome
+    read -p "Digite o nome da chave SSH (Enter para 'id_ed25519'): " chave_nome
     chave_nome=${chave_nome:-id_ed25519}
     KEY_NAME="$HOME/.ssh/$chave_nome"
 
     read -p "Digite seu e-mail para a chave SSH: " email
-
+    echo
     if [ -f "$KEY_NAME" ]; then
-        echo "⚠️  A chave $KEY_NAME já existe. Abortando para não sobrescrever."
+        echo -e "${RED}##### ⚠️  A chave $KEY_NAME já existe. Abortando para não sobrescrever. #####${RESET}"
         exit 1
     fi
 
-    echo "🔐 Gerando chave SSH..."
+    echo -e "${BLUE}##### 🔐 Gerando chave SSH... #####${RESET}"
     ssh-keygen -t ed25519 -C "$email" -f "$KEY_NAME" -N ""
+
+    sleep 1
 
     start_ssh_agent_if_needed
 
-    echo "➕ Adicionando chave ao ssh-agent..."
+    sleep 1
+
+    echo -e "${BLUE}##### ➕ Adicionando chave ao ssh-agent... #####${RESET}"
     ssh-add "$KEY_NAME"
 
     SSH_CONFIG="$HOME/.ssh/config"
@@ -88,48 +143,73 @@ if [ "$goto_skip_keygen" != true ]; then
           echo "  IdentityFile $KEY_NAME"
           echo "  IdentitiesOnly yes"
         } >> "$SSH_CONFIG"
-        echo "⚙️  ~/.ssh/config atualizado para github.com"
+        echo -e "${GREEN}##### ⚙️  ~/.ssh/config atualizado com sucesso. #####${RESET}"
     else
-        echo "⚙️  ~/.ssh/config já possui configuração para github.com"
+        echo -e "${YELLOW}##### ⚙️  ~/.ssh/config já possui entrada para github.com #####${RESET}"
     fi
 
-    echo "📋 Copie manualmente a chave pública abaixo e adicione no GitHub:"
-    echo -e "\033[32m"
+    echo -e "\n##### 📋 Copie a chave pública abaixo e adicione ao GitHub: #####\n"
+    echo -e "${GREEN}"
     cat "$KEY_NAME.pub"
-    echo -e "\033[0m"
+    echo -e "${RESET}"
 else
-    # Tenta extrair o email da chave escolhida para usar no git config
     email=$(ssh-keygen -lf "$KEY_NAME" | awk '{print $3}')
 fi
 
+sleep 1
+
+# -------------------------------------------------------------------------------
+# ##### 🛠️ Configuração global do Git #####
+# -------------------------------------------------------------------------------
+echo
 read -p "Deseja configurar seu nome e e-mail global no Git? (s/n): " configure_git
+
 if [[ "$configure_git" =~ ^[sS]$ ]]; then
     read -p "Digite seu nome completo para o Git: " git_name
     git config --global user.name "$git_name"
     git config --global user.email "$email"
-    echo "✅ Git configurado globalmente:"
+    echo
+    echo -e "${GREEN}##### ✅ Git configurado: #####${RESET}"
     echo "   🧑 Nome:  $(git config --global user.name)"
     echo "   📧 E-mail: $(git config --global user.email)"
 fi
 
-echo
-echo "🌐 Testando conexão com o GitHub..."
+sleep 1
+
+# -------------------------------------------------------------------------------
+# ##### 🌐 Testando conexão SSH com o GitHub #####
+# -------------------------------------------------------------------------------
+echo -e "\n##### 🌐 Testando conexão com o GitHub... #####"
 ssh_output=$(ssh -T git@github.com 2>&1)
 
 if echo "$ssh_output" | grep -q "successfully authenticated"; then
-    echo "✅ Conexão estabelecida com sucesso! Sua chave SSH está funcionando. 🎉"
+    echo -e "${GREEN}##### ✅ Conexão estabelecida com sucesso! 🎉 #####${RESET}"
+    echo "$ssh_output"
 else
-    echo "⚠️  Não foi possível se conectar ao GitHub via SSH."
-    echo "🔍 Verifique se você adicionou a chave pública à sua conta GitHub:"
-    echo
-    echo "🧾 Saída do ssh:"
+    echo -e "${RED}##### ❌ Falha ao conectar ao GitHub via SSH. #####${RESET}"
+    echo -e "${YELLOW}##### 🔍 Verifique se adicionou a chave pública à sua conta GitHub. #####${RESET}"
+    echo -e "\n##### 🧾 Saída do ssh: #####"
     echo "$ssh_output"
 fi
 
-echo
-echo "✅ Processo finalizado!"
+sleep 1
 
-echo -e "\033[32m"
-echo "use : git remote set-url origin git@github.com:user/repo.git"
-echo -e "\033[0m"
+# -------------------------------------------------------------------------------
+# ##### ✅ Finalização #####
+# -------------------------------------------------------------------------------
+echo
+echo -e "${GREEN}##### ✅ Processo finalizado com sucesso! #####${RESET}"
+echo
+echo -e "${YELLOW}Use: git remote set-url origin git@github.com:usuario/repositorio.git${RESET}"
+echo
+
 git remote -v
+
+echo
+
+# Mostra a chave pública finalmente (se existir)
+if [ -f "${KEY_NAME}.pub" ]; then
+    echo -e "${GREEN}$(cat "$KEY_NAME.pub")${RESET}"
+fi
+echo
+
