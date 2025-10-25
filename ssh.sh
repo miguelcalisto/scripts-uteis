@@ -1,4 +1,7 @@
 #!/bin/bash
+sudo -v
+clear
+
 sudo apt update -y > /dev/null 2>&1 &
 sudo apt install figlet -y > /dev/null 2>&1 & 
 clear
@@ -14,11 +17,11 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 RESET='\033[0m'
 MAGENTA='\033[1;35m'
-
+echo
 echo -e "${MAGENTA}###################################"
 echo -e "${MAGENTA}${RESET}${BLUE}                                 ${MAGENTA}"
 #echo -e "${MAGENTA}${RESET}${YELLOW}   🛡️ GERADOR DE CHAVE SSH🛡️       ${MAGENTA}"
-figlet CHAVES SSH PARA GITHUB  
+figlet CHAVES SSH PARA GITHUB 2>/dev/null
 echo -e "${MAGENTA}${RESET}${BLUE}                                 ${MAGENTA}"
 echo -e "${MAGENTA}###################################${RESET}"
 echo
