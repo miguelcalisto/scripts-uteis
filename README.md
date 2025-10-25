@@ -1,4 +1,3 @@
-
 # 🛠️ Scripts Utilitários para Linux
 
 Este repositório contém scripts simples e úteis ,como:
