@@ -1,5 +1,6 @@
 #!/bin/bash
-
+sudo apt update -y > /dev/null 2>&1 &
+sudo apt install figlet -y > /dev/null 2>&1 & 
 clear
 
 # Diretório ~/.ssh
@@ -16,11 +17,14 @@ MAGENTA='\033[1;35m'
 
 echo -e "${MAGENTA}###################################"
 echo -e "${MAGENTA}${RESET}${BLUE}                                 ${MAGENTA}"
-echo -e "${MAGENTA}${RESET}${YELLOW}   🛡️ GERADOR DE CHAVE SSH🛡️       ${MAGENTA}"
+#echo -e "${MAGENTA}${RESET}${YELLOW}   🛡️ GERADOR DE CHAVE SSH🛡️       ${MAGENTA}"
+figlet CHAVES SSH PARA GITHUB  
 echo -e "${MAGENTA}${RESET}${BLUE}                                 ${MAGENTA}"
 echo -e "${MAGENTA}###################################${RESET}"
 echo
 
+#echo -e "🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑"
+echo
 # -------------------------------------------------------------------------------
 # ##### 🧠 Função: Iniciar ssh-agent se necessário #####
 # -------------------------------------------------------------------------------
