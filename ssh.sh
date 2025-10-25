@@ -17,14 +17,12 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 RESET='\033[0m'
 MAGENTA='\033[1;35m'
-echo
 echo -e "${MAGENTA}###################################"
 echo -e "${MAGENTA}${RESET}${BLUE}                                 ${MAGENTA}"
 #echo -e "${MAGENTA}${RESET}${YELLOW}   🛡️ GERADOR DE CHAVE SSH🛡️       ${MAGENTA}"
 figlet CHAVES SSH PARA GITHUB 2>/dev/null
 echo -e "${MAGENTA}${RESET}${BLUE}                                 ${MAGENTA}"
 echo -e "${MAGENTA}###################################${RESET}"
-echo
 
 #echo -e "🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑"
 echo
