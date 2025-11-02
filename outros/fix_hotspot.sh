@@ -1,10 +1,7 @@
 #!/bin/bash
-# ============================================================
-# Script: fix_hotspot.sh
-# Autor: Miguel (adaptado por ChatGPT)
-# Função: Detecta e corrige quando o Docker quebra o hotspot.
-# ============================================================
 
+# Função: Detecta e corrige quando o Docker quebra o hotspot.
+# por algum motivo o docker quebra as tabelas nat do debian fazendo com que não seja possivel criar ponto de acesso
 # Interfaces — ajuste se seus nomes forem diferentes
 NET_INTERFACE="enp1s0"      # Interface que tem internet (Ethernet)
 HOTSPOT_INTERFACE="wlp0s20f3"  # Interface do ponto de acesso Wi-Fi
