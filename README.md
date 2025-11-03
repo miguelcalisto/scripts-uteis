@@ -26,7 +26,7 @@ Este repositório contém scripts simples e úteis ,como:
 - Sistema baseado em Linux (testado no **Debian 12**)
 - **Python 3.x** para os scripts `.py`
 - **`nmcli`** instalado (vem com o `NetworkManager`) para o script de DNS
-- **psensors** (para leitura da temperatura da CPU)
+- **lm-sensors** (para leitura da temperatura da CPU)
 
 ---
 
@@ -42,7 +42,8 @@ sudo apt install lm-sensors
 ```bash
 sudo sensors-detect  
 ```
-### 1. Alterar DNS 
+---
+### 1. 🌐 Alterar DNS 
 
 esta na pasta DNS do repositorio
 
@@ -50,7 +51,8 @@ esta na pasta DNS do repositorio
 chmod +x change.sh  
 sudo ./change_dns.sh  
 ```
-### 2. Scripts de temperatura
+---
+### 2. 🌡️ Scripts de temperatura
 
 O script `start.sh` inicia o processo de coleta e grava os dados de temperatura em dois arquivos:
 
@@ -77,8 +79,10 @@ para sair do venv
 ```bash
 deactivate  
 ```
-**os outros scripts servem para visualização dos logs desses arquivos**
-
+---
+**Os outros scripts servem para visualização dos logs desses arquivos:**
+- temperaturas_cpu.txt
+- MEDIAS.txt
 ```bash
 python3 calculo_temp.py  
 python3 Graficos.py  
@@ -87,7 +91,7 @@ python3 media.py
 ```
 ---
 
-## Prints dos Scripts
+## Preview
 
 ![Gráfico de Temperatura](./Grafico.png)  
 
