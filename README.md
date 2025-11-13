@@ -35,19 +35,7 @@ Este repositório contém scripts simples e úteis ,como:
 
 ---
 
-## 🚀 Como usar
 
-### 🔧 Instalar e `lm-sensors` 
-```bash
-sudo apt update  
-sudo apt install lm-sensors  
-```
-### Habilitar o sensors
-
-```bash
-sudo sensors-detect  
-```
----
 ### 1. 🌐 Alterar DNS 
 
 Esta na pasta DNS do repositorio
@@ -58,6 +46,18 @@ sudo ./change_dns.sh
 ```
 ---
 ### 2. 🌡️ Scripts de temperatura
+#### 🚀 Como usar
+
+#### 🔧 Instalar e `lm-sensors` 
+```bash
+sudo apt update  
+sudo apt install lm-sensors  
+```
+#### Habilitar o sensors
+
+```bash
+sudo sensors-detect  
+```
 
 O script `start.sh` inicia o processo de coleta e grava os dados de temperatura em dois arquivos:
 
@@ -68,6 +68,18 @@ O script `start.sh` inicia o processo de coleta e grava os dados de temperatura 
 chmod +x start.sh  
 ./start.sh  
 ```
+
+
+**Os outros scripts abaixo servem para visualização dos logs desses arquivos:**
+- temperaturas_cpu.txt
+- MEDIAS.txt
+```bash
+python3 calculo_temp.py  
+python3 Graficos.py  
+python3 media.py  
+./medias.sh  
+```
+
 ---
 ### 3. 🔑 Script de chaves SSH
 Este script permite criar chaves, iniciar o **ssh-agent** e testar a conexão com o github
@@ -96,16 +108,7 @@ para sair do venv
 deactivate  
 ```
 ---
-**Os outros scripts servem para visualização dos logs desses arquivos:**
-- temperaturas_cpu.txt
-- MEDIAS.txt
-```bash
-python3 calculo_temp.py  
-python3 Graficos.py  
-python3 media.py  
-./medias.sh  
-```
----
+
 
 ## Preview
 
