@@ -41,7 +41,7 @@ Este repositório contém scripts simples e úteis ,como:
 Esta na pasta DNS do repositorio
 
 ```bash
-chmod +x change.sh  
+chmod +x change_dns.sh  
 sudo ./change_dns.sh  
 ```
 ---
