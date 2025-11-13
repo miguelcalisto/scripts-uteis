@@ -2,9 +2,10 @@
 
 Este repositório contém scripts simples e úteis ,como:
 
-- 🔧 Alteração de DNS em /etc/resolv.conf
+- 🌐 Alteração de DNS em /etc/resolv.conf
 - 🌡️ Cálculo da média de temperaturas da CPU (testado para cpu com 8 nucleos utilizando o psensors)
-- 📈 Geração de gráficos baseados nos dados de temperaturas com python 
+- 📈 Geração de gráficos baseados nos dados de temperaturas com python
+- 🔑 Geração de chaves ssh para o github
 
 ---
 
@@ -18,6 +19,9 @@ Este repositório contém scripts simples e úteis ,como:
 | `media.py`           | Python    | Mostra de forma simples e genérica a média das temperaturas de `temperaturas_cpu.txt` |
 | `medias.sh`          | Shell     | Calcula a média de temperatura via terminal com base no arquivo `temperaturas_cpu.txt` |
 | `start.sh`           | Shell     | Script **principal** serve para pegar a temperatura das cpu e tirar a media e deixar nos logs **temperatura_cpu.txt** e **MEDIAS.txt**            | 
+| `ssh.sh`           | Shell     | Gera chaves ssh  em ~/.ssh/ e as configurações git como nome e email     | 
+| `remove_ssh.sh`           | Shell     | Remove chaves ssh e as configurações git            | 
+
 
 ---
 
@@ -27,6 +31,7 @@ Este repositório contém scripts simples e úteis ,como:
 - **Python 3.x** para os scripts `.py`
 - **`nmcli`** instalado (vem com o `NetworkManager`) para o script de DNS
 - **lm-sensors** (para leitura da temperatura da CPU)
+
 
 ---
 
@@ -45,7 +50,7 @@ sudo sensors-detect
 ---
 ### 1. 🌐 Alterar DNS 
 
-esta na pasta DNS do repositorio
+Esta na pasta DNS do repositorio
 
 ```bash
 chmod +x change.sh  
@@ -64,7 +69,18 @@ chmod +x start.sh
 ./start.sh  
 ```
 ---
-
+### 3. 🔑 Script de chaves SSH
+Este script permite criar chaves, iniciar o **ssh-agent** e testar a conexão com o github
+```bash
+chmod +x ssh.sh  
+./ssh.sh  
+```
+Para **remover** as chaves e as configurações do git 
+```bash
+chmod +x remove_ssh.sh  
+./remove_ssh.sh  
+```
+---
 ### 🐍 Observação : Criar ambiente virtual Python e instalar dependências
 
 Antes de executar os scripts Python, é recomendado criar um ambiente virtual para isolar as dependências:
@@ -98,3 +114,5 @@ python3 media.py
 ![Execução no Terminal](./assets/term.png)  
 
 ![Execução no Terminal](./assets/dns.png)  
+
+este é meu readme estou adiconando a parte de ssh , preciso de sugestões tipo icones ou algo parta melhora 
