@@ -118,4 +118,3 @@ deactivate
 
 ![Execução no Terminal](./assets/dns.png)  
 
-este é meu readme estou adiconando a parte de ssh , preciso de sugestões tipo icones ou algo parta melhora 
