@@ -93,8 +93,8 @@ python3 media.py
 
 ## Preview
 
-![Gráfico de Temperatura](./Grafico.png)  
+![Gráfico de Temperatura](./assets/Grafico.png)  
 
-![Execução no Terminal](./term.png)  
+![Execução no Terminal](./assets/term.png)  
 
-![Execução no Terminal](./dns.png)  
+![Execução no Terminal](./assets/dns.png)  
