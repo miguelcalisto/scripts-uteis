@@ -1,4 +1,4 @@
-#!/bin/bash
+!/bin/bash
 
 # Cores e estilos
 RED=$(tput setaf 1)
@@ -17,6 +17,15 @@ echo
 echo "${CYAN}#${RESET} ${BOLD}Escolha uma opção:${RESET}"
 echo
 echo "${CYAN}##############################################${RESET}"
+
+echo
+
+echo "nome : $(git config --global user.name)"
+echo "email : $(git config --global user.email)"
+
+
+
+
 echo
 echo "1) 🗑️  Remover ${BOLD}chaves SSH${RESET} e ${BOLD}configurações do Git${RESET}"
 echo "2) 🧹 Remover ${BOLD}apenas configurações do Git${RESET}"
@@ -89,5 +98,10 @@ esac
 echo ""
 sleep 1
 echo "${GREEN}${BOLD}✅ Operação concluída com sucesso.${RESET}"
+
+echo 
+echo "nome : $(git config --global user.name)"
+echo "email : $(git config --global user.email)"
+
 echo ""
 
