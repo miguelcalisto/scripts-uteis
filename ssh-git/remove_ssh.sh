@@ -19,10 +19,9 @@ echo
 echo "${CYAN}##############################################${RESET}"
 
 echo
-
+echo "${GREEN}Dados atuais do git do pc:"
 echo "nome : $(git config --global user.name)"
-echo "email : $(git config --global user.email)"
-
+echo "email : $(git config --global user.email)${RESET}"
 
 
 
