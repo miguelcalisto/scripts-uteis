@@ -2,28 +2,25 @@
 
 wallpaper_dir="$HOME/Imagens/Wallpapers"
 
-# Lista wallpapers válidos
 mapfile -t wallpapers < <(ls -1S "$wallpaper_dir" | grep -iE '\.(png|jpe?g|webp|svg)$')
 num=${#wallpapers[@]}
 
-# Arquivo que salva índice
-state_file="$HOME/.wallpaper_index"
+    state_file="$HOME/.wallpaper_index"
 
-# Se nunca foi salvo, inicia pelo dia do ano
-if [[ ! -f "$state_file" ]]; then
-    day_of_year=$(date +%j)
-    index=$(( (day_of_year - 1) % num ))
-    echo $index > "$state_file"
-fi
+    if [[ ! -f "$state_file" ]]; then
+        day_of_year=$(date +%j)
+        index=$(((day_of_year - 1) % num))
+        echo $index >"$state_file"
+    fi
 
-index=$(cat "$state_file")
+    index=$(cat "$state_file")
 
-apply_wallpaper() {
-    local idx=$1
-    local selected="$wallpaper_dir/${wallpapers[$idx]}"
-    feh --bg-scale "$selected"
-    echo "Aplicado: $selected"
-}
+    apply_wallpaper() {
+        local idx=$1
+        local selected="$wallpaper_dir/${wallpapers[$idx]}"
+        feh --bg-scale "$selected"
+        echo "Aplicado: $selected"
+    }
 
 while true; do
     echo ""
@@ -40,15 +37,15 @@ while true; do
 
     case "$choice" in
         1)
-            index=$(( (index + 1) % num ))
+            index=$(((index + 1) % num))
             apply_wallpaper "$index"
             ;;
         2)
-            index=$(( (index - 1 + num) % num ))
+            index=$(((index - 1 + num) % num))
             apply_wallpaper "$index"
             ;;
         3)
-            echo "$index" > "$state_file"
+            echo "$index" >"$state_file"
             echo "Saindo..."
             exit 0
             ;;
@@ -57,5 +54,5 @@ while true; do
             ;;
     esac
 
-    echo "$index" > "$state_file"
+    echo "$index" >"$state_file"
 done

@@ -3,9 +3,19 @@ import re
 from datetime import datetime
 
 meses_pt = {
-    'jan': 1, 'fev': 2, 'mar': 3, 'abr': 4, 'mai': 5, 'jun': 6,
-    'jul': 7, 'ago': 8, 'set': 9, 'out': 10, 'nov': 11, 'dez': 12
-}
+        "jan": 1,
+        "fev": 2,
+        "mar": 3,
+        "abr": 4,
+        "mai": 5,
+        "jun": 6,
+        "jul": 7,
+        "ago": 8,
+        "set": 9,
+        "out": 10,
+        "nov": 11,
+        "dez": 12,
+        }
 
 arquivo = "MEDIAS.txt"
 
@@ -56,18 +66,19 @@ try:
         horarios_str = [dt.strftime("%d/%m %H:%M") for dt in horarios]
 
         fig = go.Figure()
-        fig.add_trace(go.Scatter(x=horarios_str, y=temperaturas, mode='lines+markers', name='Temperatura'))
+        fig.add_trace(
+                go.Scatter(
+                    x=horarios_str, y=temperaturas, mode="lines+markers", name="Temperatura"
+                    )
+                )
 
         fig.update_layout(
-            title="Variação das Temperaturas Médias da CPU ao Longo do Tempo",
-            xaxis_title="Horário do Log",
-            yaxis_title="Temperatura Média (°C)",
-            xaxis=dict(
-                rangeslider=dict(visible=True),  # barra de scroll horizontal
-                type="category"
-            ),
-            template="plotly_dark"
-        )
+                title="Variação das Temperaturas Médias da CPU ao Longo do Tempo",
+                xaxis_title="Horário do Log",
+                yaxis_title="Temperatura Média (°C)",
+                xaxis=dict(rangeslider=dict(visible=True), type="category"),
+                template="plotly_dark",
+                )
 
         fig.show()
 

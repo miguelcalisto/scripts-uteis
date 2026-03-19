@@ -2,11 +2,10 @@
 sudo -v
 clear
 
-sudo apt update -y > /dev/null 2>&1 &
-sudo apt install figlet -y > /dev/null 2>&1 &
+sudo apt update -y >/dev/null 2>&1 &
+sudo apt install figlet -y >/dev/null 2>&1 &
 clear
 
-# Diretório ~/.ssh
 mkdir -p ~/.ssh
 chmod 700 ~/.ssh
 
@@ -18,15 +17,13 @@ BLUE='\033[0;34m'
 RESET='\033[0m'
 MAGENTA='\033[1;35m'
 
-# Cabeçalho
 echo -e "${MAGENTA}###################################"
 figlet CHAVES SSH PARA GITHUB 2>/dev/null
 echo -e "${MAGENTA}###################################${RESET}"
 echo
 
-# Função para iniciar ssh-agent se necessário
 start_ssh_agent_if_needed() {
-    if [ -z "$SSH_AGENT_PID" ] || ! ps -p "$SSH_AGENT_PID" > /dev/null 2>&1; then
+    if [ -z "$SSH_AGENT_PID" ] || ! ps -p "$SSH_AGENT_PID" >/dev/null 2>&1; then
         echo -e "${BLUE}##### 🧠 ssh-agent não está rodando. Iniciando... #####${RESET}"
         eval "$(ssh-agent -s)"
     else
@@ -34,7 +31,6 @@ start_ssh_agent_if_needed() {
     fi
 }
 
-# Procurando chaves SSH existentes
 echo -e "${BLUE}##### 🔍 Procurando chaves SSH existentes em ~/.ssh... #####${RESET}"
 chaves_existentes=()
 while IFS= read -r chave; do
@@ -57,7 +53,6 @@ echo
 read -p "Escolha uma chave existente pelo número, 'c' para criar nova ou 't' para testar SSH: " escolha
 echo
 
-# Caso: Testar conexão SSH
 if [[ "$escolha" == "t" || "$escolha" == "T" ]]; then
     echo -e "${BLUE}##### 🌐 Testando conexão SSH com o GitHub... #####${RESET}"
     ssh_output=$(ssh -T git@github.com 2>&1)
@@ -70,9 +65,9 @@ if [[ "$escolha" == "t" || "$escolha" == "T" ]]; then
     echo -e "\n##### 🧾 Saída do ssh: #####"
     echo "$ssh_output"
     exit 0
+
 fi
 
-# Caso: Usar chave existente
 if [[ "$escolha" =~ ^[0-9]+$ ]] && [ "$escolha" -ge 0 ] && [ "$escolha" -lt "${#chaves_existentes[@]}" ]; then
     KEY_NAME="${chaves_existentes[$escolha]}"
     echo -e "${BLUE}##### 🔐 Você escolheu a chave: $KEY_NAME #####${RESET}"
@@ -98,7 +93,6 @@ else
     exit 1
 fi
 
-# Caso: Criar nova chave SSH
 if [ "$goto_skip_keygen" != true ]; then
     read -p "Digite o nome da chave SSH (Enter para 'id_ed25519'): " chave_nome
     chave_nome=${chave_nome:-id_ed25519}
@@ -124,16 +118,16 @@ if [ "$goto_skip_keygen" != true ]; then
 
     if ! grep -q "Host github.com" "$SSH_CONFIG"; then
         {
-          echo ""
-          echo "Host github.com"
-          echo "  HostName github.com"
-          echo "  User git"
-          echo "  IdentityFile $KEY_NAME"
-          echo "  IdentitiesOnly yes"
-        } >> "$SSH_CONFIG"
-        echo -e "${GREEN}##### ⚙️   ~/.ssh/config atualizado com sucesso. #####${RESET}"
-    else
-        echo -e "${YELLOW}##### ⚙️   ~/.ssh/config já possui entrada para github.com #####${RESET}"
+            echo ""
+            echo "Host github.com"
+            echo "  HostName github.com"
+            echo "  User git"
+            echo "  IdentityFile $KEY_NAME"
+            echo "  IdentitiesOnly yes"
+        } >>"$SSH_CONFIG"
+    echo -e "${GREEN}##### ⚙️   ~/.ssh/config atualizado com sucesso. #####${RESET}"
+else
+    echo -e "${YELLOW}##### ⚙️   ~/.ssh/config já possui entrada para github.com #####${RESET}"
     fi
 
     echo -e "\n##### 📋 Copie a chave pública abaixo e adicione ao GitHub: #####\n"
@@ -142,7 +136,6 @@ else
     email=$(ssh-keygen -lf "$KEY_NAME" | awk '{print $3}')
 fi
 
-# Configuração global do Git
 echo
 echo "Name: $(git config user.name)"
 echo "Email: $(git config user.email)"
@@ -157,7 +150,6 @@ if [[ "$configure_git" =~ ^[sS]$ ]]; then
     echo "   📧 E-mail: $(git config --global user.email)"
 fi
 
-# Teste final de conexão SSH
 echo -e "\n##### 🌐 Testando conexão com o GitHub... #####"
 ssh_output=$(ssh -T git@github.com 2>&1)
 if echo "$ssh_output" | grep -q "successfully authenticated"; then
@@ -169,7 +161,6 @@ fi
 echo -e "\n##### 🧾 Saída do ssh: #####"
 echo "$ssh_output"
 
-# Finalização
 echo
 echo -e "${GREEN}##### ✅ Processo finalizado com sucesso! #####${RESET}"
 echo -e "${YELLOW}Use: git remote set-url origin git@github.com:usuario/repositorio.git${RESET}"
@@ -180,4 +171,3 @@ if [ -f "${KEY_NAME}.pub" ]; then
     echo -e "${GREEN}$(cat "$KEY_NAME.pub")${RESET}"
 fi
 echo
-

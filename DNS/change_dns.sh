@@ -1,15 +1,6 @@
 #!/bin/bash
 
-# Script: alterar_dns.sh
-# Função: Altera o DNS da conexão ativa e cria um backup restaurável
-
-# Verifica se está sendo executado como root
-if [ "$EUID" -ne 0 ]; then
-    echo "⚠️  Por favor, execute como root (use: sudo ./alterar_dns.sh)"
-    exit 1
-fi
-
-# Obtém a conexão de rede ativa
+sudo -v
 CONEXAO=$(nmcli -t -f NAME connection show --active | head -n 1)
 
 if [ -z "$CONEXAO" ]; then
@@ -17,26 +8,22 @@ if [ -z "$CONEXAO" ]; then
     exit 1
 fi
 
-# Caminho do backup
 BACKUP_DIR="/etc/nm-dns-backup"
 BACKUP_FILE="$BACKUP_DIR/${CONEXAO}.bak"
 
-# Cria diretório de backup se não existir
 mkdir -p "$BACKUP_DIR"
 
-# Faz backup das configurações DNS atuais (se ainda não existir)
 if [ ! -f "$BACKUP_FILE" ]; then
     echo "🔄 Criando backup da conexão: $CONEXAO"
     {
         echo "dns=$(nmcli -g ipv4.dns connection show "$CONEXAO")"
         echo "ignore_auto_dns=$(nmcli -g ipv4.ignore-auto-dns connection show "$CONEXAO")"
-    } > "$BACKUP_FILE"
-    echo "📁 Backup salvo em: $BACKUP_FILE"
+    } >"$BACKUP_FILE"
+echo "📁 Backup salvo em: $BACKUP_FILE"
 else
     echo "📁 Backup já existe: $BACKUP_FILE"
 fi
 
-# Menu de DNS
 echo "============================="
 echo "   Escolha o novo DNS:"
 echo "============================="
@@ -58,7 +45,6 @@ echo "============================="
 
 read -p "Digite o número da opção desejada: " opcao
 
-# Aplica ou restaura DNS
 case $opcao in
     1)
         DNS="1.1.1.1 1.0.0.1"
@@ -160,7 +146,6 @@ case $opcao in
         ;;
 esac
 
-# Aplica novo DNS
 echo "🔧 Aplicando DNS ($NOME) na conexão: $CONEXAO"
 nmcli connection modify "$CONEXAO" ipv4.dns "$DNS"
 nmcli connection modify "$CONEXAO" ipv4.ignore-auto-dns yes
@@ -174,10 +159,8 @@ else
     nmcli connection modify "$CONEXAO" ipv6.ignore-auto-dns no
 fi
 
-# Reinicia a conexão
 nmcli connection down "$CONEXAO" && nmcli connection up "$CONEXAO"
 
-# Teste de conectividade
 echo "🔍 Testando conectividade com a internet..."
 if ping -c 2 -W 2 1.1.1.1 >/dev/null 2>&1 || ping -c 2 -W 2 8.8.8.8 >/dev/null 2>&1; then
     echo "✅ Conectividade IPv4 OK!"
@@ -192,4 +175,3 @@ else
 fi
 
 echo "✅ DNS alterado com sucesso para: $DNS"
-

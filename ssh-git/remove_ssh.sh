@@ -1,6 +1,5 @@
-!/bin/bash
+#!/usr/bin/bash
 
-# Cores e estilos
 RED=$(tput setaf 1)
 GREEN=$(tput setaf 2)
 YELLOW=$(tput setaf 3)
@@ -22,8 +21,6 @@ echo
 echo "${GREEN}Dados atuais do git do pc:"
 echo "nome : $(git config --global user.name)"
 echo "email : $(git config --global user.email)${RESET}"
-
-
 
 echo
 echo "1) 🗑️  Remover ${BOLD}chaves SSH${RESET} e ${BOLD}configurações do Git${RESET}"
@@ -66,7 +63,7 @@ case "$option" in
         git config --global --unset user.email 2>/dev/null
         echo "${GREEN}✅ Configurações do Git removidas.${RESET}"
         ;;
-    
+
     2)
         echo "${YELLOW}${BOLD}Você escolheu remover apenas as configurações do Git.${RESET}"
         read -p "Tem certeza que deseja continuar? (s/n): " confirm_git
@@ -82,12 +79,12 @@ case "$option" in
         git config --global --unset user.email 2>/dev/null
         echo "${GREEN}✅ Configurações do Git removidas.${RESET}"
         ;;
-    
+
     3)
         echo "${YELLOW}Operação cancelada pelo usuário.${RESET}"
         exit 0
         ;;
-    
+
     *)
         echo "${RED}❌ Opção inválida. Abortando.${RESET}"
         exit 1
@@ -98,9 +95,8 @@ echo ""
 sleep 1
 echo "${GREEN}${BOLD}✅ Operação concluída com sucesso.${RESET}"
 
-echo 
+echo
 echo "nome : $(git config --global user.name)"
 echo "email : $(git config --global user.email)"
 
 echo ""
-

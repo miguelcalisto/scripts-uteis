@@ -1,14 +1,11 @@
 #!/bin/bash
 
-# Contagem total de linhas no arquivo
-total=$(wc -l < temperaturas_cpu.txt)
+total=$(wc -l <temperaturas_cpu.txt)
 
-# Função para calcular a porcentagem
 calcular_porcentagem() {
     echo "scale=2; ($1 / $total) * 100" | bc
 }
 
-# FAIXAS DE TEMPERATURA
 declare -A faixas
 
 faixas["ENTRE 90 E 100"]=$(awk '$1 > 90 && $1 <= 100' temperaturas_cpu.txt | wc -l)
@@ -22,18 +19,16 @@ faixas["ENTRE 55 E 60"]=$(awk '$1 > 55 && $1 <= 60' temperaturas_cpu.txt | wc -l
 faixas["ENTRE 50 E 55"]=$(awk '$1 > 50 && $1 <= 55' temperaturas_cpu.txt | wc -l)
 faixas["MENOR QUE 50"]=$(awk '$1 <= 50' temperaturas_cpu.txt | wc -l)
 
-# Função para exibir faixas e porcentagens
 mostrar_faixa() {
     faixa=$1
     quantidade=${faixas[$faixa]}
     porcentagem=$(calcular_porcentagem $quantidade)
-    
+
     echo "$faixa: $quantidade"
     echo "Porcentagem: $porcentagem%"
     echo "------------------------------"
 }
 
-# Exibindo as faixas com a porcentagem
 mostrar_faixa "ENTRE 90 E 100"
 mostrar_faixa "ENTRE 85 E 90"
 mostrar_faixa "ENTRE 80 E 85"
@@ -45,6 +40,4 @@ mostrar_faixa "ENTRE 55 E 60"
 mostrar_faixa "ENTRE 50 E 55"
 mostrar_faixa "MENOR QUE 50"
 
-# TOTAL
 echo "TOTAL: $total"
-
